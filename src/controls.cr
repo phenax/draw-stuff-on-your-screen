@@ -2,14 +2,25 @@ require "sdl"
 
 module Dsoys
   class Controls
+    COLORS = [
+      Color[26, 188, 156],
+      Color[231, 76, 60],
+      Color[52, 152, 219],
+      Color[155, 89, 182],
+      Color[127, 140, 141],
+      Color[241, 196, 15],
+    ]
+
     property buttons = [] of Button
-    property draw_color = Color[255]
+    property draw_color = COLORS[0]
     property hovered_point = Point.new(0, 0)
 
     def initialize
-      buttons.push(color_btn(Point.new(40, 100), Color[0, 255, 0]))
-      buttons.push(color_btn(Point.new(40, 140), Color[255, 0, 0]))
-      buttons.push(color_btn(Point.new(40, 180), Color[0, 0, 255]))
+      x = 40
+      y = 100
+      COLORS.each_with_index do |color, index|
+        buttons.push(color_btn(Point.new(x, y + 40*index), color))
+      end
     end
 
     def color_btn(pos : Point, color : Color)
@@ -23,7 +34,9 @@ module Dsoys
       buttons.each do |btn|
         btn.draw(renderer, btn.is_active(hovered_point.x, hovered_point.y))
       end
-      # TODO: draw current color
+
+      renderer.draw_color = draw_color
+      renderer.fill_rect(26, 26, 28, 28)
     end
 
     def activate(x : Int, y : Int)
