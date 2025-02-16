@@ -1,27 +1,21 @@
 # dsoys
+Draw stuff on your screen
 
-TODO: Write a description here
+<img src="./media/screenshot.jpg" alt="screenshot" width="500" />
 
 ## Installation
+- Clone the repo
+- Build with crystal or nix
+```sh
+crystal build src/main.cr
+# OR
+nix build
+```
 
-TODO: Write installation instructions here
+Or run it directly with nix
+```
+nix run github:phenax/chelleport#chelleport
+```
 
 ## Usage
-
-TODO: Write usage instructions here
-
-## Development
-
-TODO: Write development instructions here
-
-## Contributing
-
-1. Fork it (<https://github.com/your-github-user/dsoys/fork>)
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
-
-## Contributors
-
-- [Akshay Nair](https://github.com/your-github-user) - creator and maintainer
+Run `dsoys` and draw stuff
