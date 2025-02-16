@@ -13,7 +13,7 @@ module Dsoys
 
     property buttons = [] of Button
     property draw_color = COLORS[0]
-    property hovered_point = Point.new(0, 0)
+    property cursor_position = Point.new(0, 0)
 
     def initialize
       x = 40
@@ -32,7 +32,7 @@ module Dsoys
 
     def draw(renderer : SDL::Renderer)
       buttons.each do |btn|
-        btn.draw(renderer, btn.is_active(hovered_point.x, hovered_point.y))
+        btn.draw(renderer, btn.is_active(cursor_position.x, cursor_position.y))
       end
 
       renderer.draw_color = draw_color

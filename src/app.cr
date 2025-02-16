@@ -8,6 +8,7 @@ module Dsoys
     property drawables = [] of Dsoys::Drawable
     property current_drawable : Dsoys::Drawable?
     property controls = Controls.new
+    property current_drawable_class = Dsoys::FreeDraw
 
     def initialize
       SDL.init(SDL::Init::VIDEO)
@@ -50,22 +51,15 @@ module Dsoys
       when SDL::Event::Quit
         return :quit
       when SDL::Event::Keyboard
-        return :quit if event.sym.q?
+        on_keyboard_event(event)
       when SDL::Event::MouseButton
         if event.pressed?
-          @current_drawable ||= Dsoys::FreeDraw.new
           on_mouse_press(event)
         else
-          drawables.push current_drawable.not_nil! unless current_drawable.nil?
-          @current_drawable = nil
+          on_mouse_release(event)
         end
       when SDL::Event::MouseMotion
-        point = SDL::Point.new(event.x, event.y)
-        if event.pressed?
-          current_drawable.with_nullable { |d| d.update(point) }
-        else
-          controls.hovered_point = point
-        end
+        on_mouse_move(event)
       end
     end
 
@@ -77,8 +71,37 @@ module Dsoys
       controls.draw(renderer)
     end
 
+    def on_keyboard_event(event)
+      return unless event.keydown?
+
+      case event.sym
+      when LibSDL::Keycode::Q
+        return :quit
+      when LibSDL::Keycode::D
+        @current_drawable_class = Dsoys::FreeDraw
+      when LibSDL::Keycode::R
+        @current_drawable_class = Dsoys::RectDraw
+      end
+    end
+
     def on_mouse_press(event)
+      point = SDL::Point.new(event.x, event.y)
+      @current_drawable ||= current_drawable_class.new(point)
       controls.activate(event.x, event.y)
+    end
+
+    def on_mouse_release(event)
+      drawables.push current_drawable.not_nil! unless current_drawable.nil?
+      @current_drawable = nil
+    end
+
+    def on_mouse_move(event)
+      point = SDL::Point.new(event.x, event.y)
+      if event.pressed?
+        current_drawable.with_nullable { |d| d.update(point) }
+      else
+        controls.cursor_position = point
+      end
     end
   end
 end
