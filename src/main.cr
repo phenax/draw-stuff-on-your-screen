@@ -1,4 +1,4 @@
-require "./src/dsoys"
+require "./dsoys"
 
 app = Dsoys::App.new
 at_exit { app.finalize }

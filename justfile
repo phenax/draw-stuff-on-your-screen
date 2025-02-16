@@ -1,11 +1,12 @@
+setup:
+  shards install
+  crystal2nix
 
 build:
-  mkdir -p build
-  crystal build main.cr -O 3 -t -o build/dsoys
+  nix build
 
 run:
-  crystal run main.cr
+  crystal run src/main.cr
 
 fmt:
   crystal tool format
-

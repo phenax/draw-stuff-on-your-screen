@@ -1,20 +1,19 @@
 name: dsoys
-version: 0.1.0
+version: 0.0.0
+
+crystal: '>= 1.14.1'
 
 authors:
   - Akshay Nair <phenax5@gmail.com>
 
+repository: https://github.com/phenax/draw-stuff-on-your-screen
+
 targets:
   dsoys:
-    main: src/dsoys.cr
+    main: src/main.cr
 
-crystal: '>= 1.14.1'
-
-license: GPL3
+license: GPL-3.0
 
 dependencies:
   sdl:
     github: ysbaddaden/sdl.cr
-
-# libraries:
-#   libSDL2_mixer: ~> 2.0.0
