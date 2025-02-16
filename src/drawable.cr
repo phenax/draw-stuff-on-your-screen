@@ -1,9 +1,8 @@
 require "sdl"
 
 module Dsoys
-  class Drawable
-    def update(point : SDL::Point)
-    end
+  abstract class Drawable
+    abstract def update(point : SDL::Point)
 
     def draw(renderer : SDL::Renderer)
       renderer.draw_color = SDL::Color[255, 0, 0]
@@ -19,7 +18,6 @@ module Dsoys
 
     def draw(renderer)
       super renderer
-
       renderer.draw_thick_line(points, 3)
     end
   end

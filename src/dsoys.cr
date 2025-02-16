@@ -1,8 +1,8 @@
 require "sdl"
+require "./ext"
 
 module Dsoys
-  VERSION = "0.1.0"
+  VERSION = "0.0.0"
 end
 
-require "./ext"
-require "./drawable"
+require "./app"

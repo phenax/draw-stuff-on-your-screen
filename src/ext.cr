@@ -2,6 +2,7 @@ require "sdl"
 
 lib LibSDL
   fun set_window_opacity = SDL_SetWindowOpacity(window : Window*, opacity : Float)
+  fun get_window_opacity = SDL_GetWindowOpacity(window : Window*) : Float
   # fun set_window_mouse_grab = SDL_SetWindowMouseGrab(window : Window*, grabbed : Bool)
 end
 
@@ -14,14 +15,16 @@ lib LibSDLGfx
   alias Color = LibSDL::Color
 
   fun draw_thick_line = thickLineColor(
-                          surface : Renderer*,
-                          x1: Int, y1: Int, x2: Int, y2: Int,
-                          thickness: Int, color: Color)
+    surface : Renderer*,
+    x1 : Int, y1 : Int, x2 : Int, y2 : Int,
+    thickness : Int, color : Color,
+  )
 
   fun fill_circle = filledCircleColor(
-                      surface : Renderer*,
-                      x: Int, y: Int,
-                      radius: Int, color: Color)
+    surface : Renderer*,
+    x : Int, y : Int,
+    radius : Int, color : Color,
+  )
 end
 
 module SDL
@@ -38,3 +41,10 @@ module SDL
   end
 end
 
+class Object
+  def with_nullable(&)
+    v = self
+    return nil if !v
+    yield v
+  end
+end
