@@ -13,6 +13,7 @@
         pkgs = import nixpkgs { inherit system; };
         libDependencies = with pkgs; [
           SDL2
+          SDL2_gfx
           xorg.libX11
         ];
       in {
