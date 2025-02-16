@@ -2,11 +2,10 @@ require "sdl"
 
 module Dsoys
   abstract class Drawable
-    abstract def update(point : SDL::Point)
+    property color : Color?
 
-    def draw(renderer : SDL::Renderer)
-      renderer.draw_color = SDL::Color[255, 0, 0]
-    end
+    abstract def update(point : SDL::Point)
+    abstract def draw(renderer : SDL::Renderer)
   end
 
   class FreeDraw < Drawable
@@ -17,7 +16,7 @@ module Dsoys
     end
 
     def draw(renderer)
-      super renderer
+      renderer.draw_color = color || Color[255]
       renderer.draw_thick_line(points, 3)
     end
   end

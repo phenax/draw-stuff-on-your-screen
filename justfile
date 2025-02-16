@@ -6,3 +6,6 @@ build:
 run:
   crystal run main.cr
 
+fmt:
+  crystal tool format
+

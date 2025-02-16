@@ -25,6 +25,12 @@ lib LibSDLGfx
     x : Int, y : Int,
     radius : Int, color : Color,
   )
+
+  fun draw_circle = circleColor(
+    surface : Renderer*,
+    x : Int, y : Int,
+    radius : Int, color : Color,
+  )
 end
 
 module SDL
@@ -37,6 +43,14 @@ module SDL
       points.each_cons_pair do |p1, p2|
         draw_thick_line(p1, p2, thickness)
       end
+    end
+
+    def fill_circle(p : Point, radius : Int)
+      LibSDLGfx.fill_circle(self, p.x, p.y, radius, draw_color)
+    end
+
+    def draw_circle(p : Point, radius : Int)
+      LibSDLGfx.draw_circle(self, p.x, p.y, radius, draw_color)
     end
   end
 end
