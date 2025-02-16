@@ -1,0 +1,17 @@
+name: dsoys
+version: 0.1.0
+
+authors:
+  - Akshay Nair <phenax5@gmail.com>
+
+targets:
+  dsoys:
+    main: src/dsoys.cr
+
+crystal: '>= 1.14.1'
+
+license: GPL3
+
+dependencies:
+  sdl:
+    github: ysbaddaden/sdl.cr
