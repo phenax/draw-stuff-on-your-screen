@@ -1,0 +1,9 @@
+* Tasks
+- [X] reset/clear all key
+- [X] erase/delete items
+- [ ] documentation for key binds
+- [ ] save drawing to file
+- [ ] buttons for freedraw and rect
+- [ ] cursor with current color
+- [ ] draw circle?
+- [ ] keys to switch colors

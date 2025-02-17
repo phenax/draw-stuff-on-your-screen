@@ -18,16 +18,18 @@ module Dsoys
     def initialize
       x = 40
       y = 100
+      @visible = true
       COLORS.each_with_index do |color, index|
         buttons.push(color_btn(Point.new(x, y + 40*index), color))
       end
     end
 
-    def color_btn(pos : Point, color : Color)
-      btn = Button.new(pos) { @draw_color = color }
-      btn.bg = color
-      btn.size = 14
-      btn
+    def toggle_visible
+      @visible = !@visible
+    end
+
+    def visible?
+      @visible
     end
 
     def draw(renderer : SDL::Renderer)
@@ -44,6 +46,13 @@ module Dsoys
         btn.activate if btn.is_active(x, y)
       end
     end
+
+    private def color_btn(pos : Point, color : Color)
+      btn = Button.new(pos) { @draw_color = color }
+      btn.bg = color
+      btn.size = 14
+      btn
+    end
   end
 
   class Button
@@ -54,8 +63,7 @@ module Dsoys
     end
 
     def is_active(x : Int, y : Int)
-      dist = Math.sqrt((@position.x - x)**2 + (@position.y - y)**2)
-      dist <= @size
+      @position.distance(Point[x, y]) <= @size
     end
 
     def draw(renderer : SDL::Renderer, is_active : Bool = false)

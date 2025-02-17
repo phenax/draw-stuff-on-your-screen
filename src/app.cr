@@ -1,41 +1,23 @@
+require "./sdlappbase"
 require "./drawable"
 require "./controls"
 
 module Dsoys
-  class App
-    property window : SDL::Window
-    property renderer : SDL::Renderer
+  struct Point
+    def distance(p)
+      Math.sqrt((self.x - p.x)**2 + (self.y - p.y)**2)
+    end
+  end
+
+  class App < SDLAppBase
     property drawables = [] of Dsoys::Drawable
     property current_drawable : Dsoys::Drawable?
-    property controls = Controls.new
     property current_drawable_class = Dsoys::FreeDraw
-
-    def initialize
-      SDL.init(SDL::Init::VIDEO)
-
-      @window = SDL::Window.new("Dsoys: Draw stuff on your screen", 0, 0,
-        SDL::Window::Position::UNDEFINED, SDL::Window::Position::UNDEFINED,
-        SDL::Window::Flags::SHOWN | SDL::Window::Flags::ALWAYS_ON_TOP | SDL::Window::Flags::ALLOW_HIGHDPI)
-      window.fullscreen = SDL::Window::Fullscreen::FULLSCREEN_DESKTOP
-      window.bordered = false
-      window.grab = false
-
-      @renderer = SDL::Renderer.new(window, flags: SDL::Renderer::Flags::ACCELERATED | SDL::Renderer::Flags::PRESENTVSYNC)
-      renderer.draw_blend_mode = SDL::BlendMode::BLEND
-      LibSDL.set_window_opacity(window, 0.5)
-
-      @cursor = LibSDL.create_system_cursor(LibSDL::SystemCursor::HAND)
-      LibSDL.set_cursor(@cursor)
-    end
-
-    def finalize
-      SDL.quit
-      LibSDL.free_cursor(@cursor)
-    end
+    property controls = Controls.new
 
     def loop
       event = SDL::Event.wait
-      renderer.draw_color = SDL::Color[0]
+      renderer.draw_color = SDL::Color[0, 0, 0, 0]
 
       action = handle_event event
 
@@ -46,62 +28,76 @@ module Dsoys
       return action
     end
 
-    def handle_event(event : SDL::Event)
+    private def handle_event(event : SDL::Event)
       case event
-      when SDL::Event::Quit
-        return :quit
-      when SDL::Event::Keyboard
-        on_keyboard_event(event)
+      when SDL::Event::Quit        then return :quit
+      when SDL::Event::Keyboard    then on_keypress event if event.keydown?
+      when SDL::Event::MouseMotion then on_mouse_move event
       when SDL::Event::MouseButton
         if event.pressed?
-          on_mouse_press(event)
+          on_mouse_press event
         else
-          on_mouse_release(event)
+          on_mouse_release event
         end
-      when SDL::Event::MouseMotion
-        on_mouse_move(event)
       end
     end
 
-    def draw
-      current_drawable.with_nullable { |d| d.color ||= controls.draw_color }
-      drawables.each { |d| d.draw(renderer) }
-      current_drawable.with_nullable { |d| d.draw(renderer) }
+    private def draw
+      drawables.each { |d| draw_drawable(d, d.color) }
+      draw_drawable current_drawable
 
-      controls.draw(renderer)
+      controls.draw(renderer) if controls.visible?
     end
 
-    def on_keyboard_event(event)
-      return unless event.keydown?
-
+    private def on_keypress(event)
       case event.sym
-      when LibSDL::Keycode::Q
-        return :quit
-      when LibSDL::Keycode::D
-        @current_drawable_class = Dsoys::FreeDraw
-      when LibSDL::Keycode::R
-        @current_drawable_class = Dsoys::RectDraw
+      when .q?                  then return :quit
+      when .p?, .f?             then set_drawable_class Dsoys::FreeDraw
+      when .r?                  then set_drawable_class Dsoys::RectDraw
+      when .d?                  then set_drawable_class Dsoys::DeleteObjectDraw
+      when .c?                  then clear_drawables
+      when LibSDL::Keycode::TAB then controls.toggle_visible
       end
     end
 
-    def on_mouse_press(event)
+    private def set_drawable_class(klass : Drawable.class)
+      @current_drawable_class = klass
+    end
+
+    private def clear_drawables
+      @drawables = [] of Drawable
+      @current_drawable = nil
+    end
+
+    private def on_mouse_press(event)
       point = SDL::Point.new(event.x, event.y)
       @current_drawable ||= current_drawable_class.new(point)
       controls.activate(event.x, event.y)
     end
 
-    def on_mouse_release(event)
-      drawables.push current_drawable.not_nil! unless current_drawable.nil?
+    private def on_mouse_release(event)
+      drawable = current_drawable
+      if !drawable.nil? && drawable.persist
+        drawables.push drawable
+      end
       @current_drawable = nil
     end
 
-    def on_mouse_move(event)
+    private def on_mouse_move(event)
       point = SDL::Point.new(event.x, event.y)
       if event.pressed?
-        current_drawable.with_nullable { |d| d.update(point) }
+        drawable = current_drawable
+        @drawables = drawable.update(point, @drawables) unless drawable.nil?
       else
         controls.cursor_position = point
       end
+    end
+
+    private def draw_drawable(drawable, color = controls.draw_color)
+      return if drawable.nil?
+
+      drawable.color ||= color
+      drawable.draw(renderer)
     end
   end
 end

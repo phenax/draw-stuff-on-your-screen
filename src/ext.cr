@@ -53,12 +53,10 @@ module SDL
       LibSDLGfx.draw_circle(self, p.x, p.y, radius, draw_color)
     end
   end
-end
 
-class Object
-  def with_nullable(&)
-    v = self
-    return nil if !v
-    yield v
+  struct Point
+    def distance(p)
+      Math.sqrt((self.x - p.x)**2 + (self.y - p.y)**2)
+    end
   end
 end
