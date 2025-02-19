@@ -58,6 +58,14 @@ module Dsoys
       renderer.draw_thick_line(rect_points, 3)
     end
 
+    def is_on_object(point : Point) : Bool
+      rect_points.each.cons_pair.any? { |p1, p2|
+        sum_dists = point.distance(p1) + point.distance(p2)
+        length = p1.distance(p2)
+        length >= sum_dists - 0.1
+      }
+    end
+
     private def rect_points
       [
         startPoint,
