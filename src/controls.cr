@@ -39,6 +39,10 @@ module Dsoys
       renderer.fill_rect(26, 26, 28, 28)
     end
 
+    def select_color(index : UInt32)
+      @draw_color = COLORS[index]
+    end
+
     def activate(x : Int, y : Int)
       buttons.each do |btn|
         btn.activate if btn.is_active(x, y)

@@ -24,13 +24,19 @@ module Dsoys
 
     private def on_keypress(event)
       case event.sym
-      when .q?                     then return :quit
-      when .p?, .f?                then set_drawable_class Dsoys::FreeDraw
-      when .r?                     then set_drawable_class Dsoys::RectDraw
-      when .d?                     then set_drawable_class Dsoys::DeleteObjectDraw
-      when .o?                     then set_drawable_class Dsoys::CircleDraw
-      when LibSDL::Keycode::DELETE then clear_drawables
-      when LibSDL::Keycode::TAB    then controls.toggle_visible
+      when .q?      then return :quit
+      when .p?, .f? then set_drawable_class Dsoys::FreeDraw
+      when .r?      then set_drawable_class Dsoys::RectDraw
+      when .d?      then set_drawable_class Dsoys::DeleteObjectDraw
+      when .c?      then set_drawable_class Dsoys::CircleDraw
+      when .key_1?  then controls.select_color 0
+      when .key_2?  then controls.select_color 1
+      when .key_3?  then controls.select_color 2
+      when .key_4?  then controls.select_color 3
+      when .key_5?  then controls.select_color 4
+      when .key_6?  then controls.select_color 5
+      when .delete? then clear_drawables
+      when .tab?    then controls.toggle_visible
       end
     end
 

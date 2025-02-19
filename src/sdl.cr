@@ -63,7 +63,7 @@ module SDL
     def midpoint(p)
       midX = (x + p.x) / 2
       midY = (y + p.y) / 2
-      Point[ midX.to_i, midY.to_i ]
+      Point[midX.to_i, midY.to_i]
     end
   end
 end
