@@ -1,4 +1,4 @@
-require "sdl"
+require "./sdl"
 
 module Dsoys
   class SDLAppBase
@@ -11,7 +11,7 @@ module Dsoys
       @window = SDL::Window.new("Dsoys", 0, 0,
         SDL::Window::Position::UNDEFINED, SDL::Window::Position::UNDEFINED,
         SDL::Window::Flags::SHOWN | SDL::Window::Flags::ALWAYS_ON_TOP | SDL::Window::Flags::ALLOW_HIGHDPI)
-      window.fullscreen = SDL::Window::Fullscreen::FULLSCREEN_DESKTOP
+      window.fullscreen = true
       window.bordered = false
       window.grab = false
 

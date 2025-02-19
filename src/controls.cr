@@ -1,4 +1,4 @@
-require "sdl"
+require "./sdl"
 
 module Dsoys
   class Controls
@@ -28,11 +28,9 @@ module Dsoys
       @visible = !@visible
     end
 
-    def visible?
-      @visible
-    end
-
     def draw(renderer : SDL::Renderer)
+      return unless @visible
+
       buttons.each do |btn|
         btn.draw(renderer, btn.is_active(cursor_position.x, cursor_position.y))
       end

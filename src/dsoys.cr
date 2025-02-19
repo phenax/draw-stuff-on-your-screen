@@ -1,5 +1,4 @@
-require "sdl"
-require "./ext"
+require "./sdl"
 
 module Dsoys
   VERSION = "0.0.0"

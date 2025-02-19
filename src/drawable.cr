@@ -1,4 +1,4 @@
-require "sdl"
+require "./sdl"
 
 module Dsoys
   abstract class Drawable
@@ -8,12 +8,8 @@ module Dsoys
     def initialize(point : Point)
     end
 
-    def update(point : Point, drawables : Array(Drawable)) : Array(Drawable)
-      drawables
-    end
-
-    def draw(renderer : SDL::Renderer)
-    end
+    abstract def update(point : Point, drawables : Array(Drawable)) : Array(Drawable)
+    abstract def draw(renderer : SDL::Renderer)
 
     def is_on_object(point : Point) : Bool
       false
@@ -78,6 +74,9 @@ module Dsoys
 
     def update(point, drawables) : Array(Drawable)
       drawables.reject { |d| d.is_on_object(point) }
+    end
+
+    def draw(renderer : SDL::Renderer)
     end
   end
 end

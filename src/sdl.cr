@@ -3,6 +3,7 @@ require "sdl"
 lib LibSDL
   fun set_window_opacity = SDL_SetWindowOpacity(window : Window*, opacity : Float)
   fun get_window_opacity = SDL_GetWindowOpacity(window : Window*) : Float
+  # fun set_capture_mouse = SDL_CaptureMouse(grabbed : Bool)
   # fun set_window_mouse_grab = SDL_SetWindowMouseGrab(window : Window*, grabbed : Bool)
 end
 
