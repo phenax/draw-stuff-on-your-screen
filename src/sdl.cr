@@ -59,5 +59,11 @@ module SDL
     def distance(p)
       Math.sqrt((self.x - p.x)**2 + (self.y - p.y)**2)
     end
+
+    def midpoint(p)
+      midX = (x + p.x) / 2
+      midY = (y + p.y) / 2
+      Point[ midX.to_i, midY.to_i ]
+    end
   end
 end

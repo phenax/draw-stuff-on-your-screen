@@ -34,7 +34,7 @@ module Dsoys
     end
 
     def is_on_object(point : Point) : Bool
-      !(points.find { |p| p.distance(point) <= 5 }).nil?
+      points.any? { |p| p.distance(point) <= 5 }
     end
   end
 
@@ -85,6 +85,43 @@ module Dsoys
     end
 
     def draw(renderer : SDL::Renderer)
+    end
+  end
+
+  class CircleDraw < Drawable
+    property startPoint : Point
+    property endPoint : Point
+
+    def initialize(point : Point)
+      @startPoint = point
+      @endPoint = point
+    end
+
+    def update(point, drawables) : Array(Drawable)
+      @endPoint = point
+
+      drawables
+    end
+
+    def draw(renderer)
+      renderer.draw_color = color || Color[255]
+      renderer.draw_circle(center, radius.to_i)
+    end
+
+    def is_on_object(point : Point) : Bool
+      (point.distance(center) - radius).abs <= 4
+    end
+
+    private def radius
+      center.distance(pointOnCircumference)
+    end
+
+    private def center
+      @startPoint # .midpoint(@endPoint)
+    end
+
+    private def pointOnCircumference
+      @endPoint
     end
   end
 end

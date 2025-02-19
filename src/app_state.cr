@@ -28,6 +28,7 @@ module Dsoys
       when .p?, .f?                then set_drawable_class Dsoys::FreeDraw
       when .r?                     then set_drawable_class Dsoys::RectDraw
       when .d?                     then set_drawable_class Dsoys::DeleteObjectDraw
+      when .o?                     then set_drawable_class Dsoys::CircleDraw
       when LibSDL::Keycode::DELETE then clear_drawables
       when LibSDL::Keycode::TAB    then controls.toggle_visible
       end
