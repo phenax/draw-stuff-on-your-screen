@@ -5,6 +5,9 @@ module Dsoys
     property color : Color?
     getter persist = true
 
+    def self.draw_icon(renderer : SDL::Renderer, size : Int32, pos : Point)
+    end
+
     def initialize(point : Point)
     end
 
@@ -18,6 +21,12 @@ module Dsoys
 
   class FreeDraw < Drawable
     property points = [] of Point
+
+    def self.draw_icon(renderer : SDL::Renderer, size : Int32, pos : Point)
+      renderer.draw_line(
+        Point[(pos.x - size/2).to_i, pos.y],
+        Point[(pos.x + size/2).to_i, pos.y])
+    end
 
     def initialize(point : Point)
     end
@@ -41,6 +50,10 @@ module Dsoys
   class RectDraw < Drawable
     property startPoint : Point
     property endPoint : Point
+
+    def self.draw_icon(renderer : SDL::Renderer, size : Int32, pos : Point)
+      renderer.draw_rect((pos.x - size/2).to_i, (pos.y - size/2).to_i, size, size)
+    end
 
     def initialize(point : Point)
       @startPoint = point
@@ -80,6 +93,11 @@ module Dsoys
   class DeleteObjectDraw < Drawable
     getter persist = false
 
+    def self.draw_icon(renderer : SDL::Renderer, size : Int32, pos : Point)
+      renderer.draw_line(Point[(pos.x - size/2).to_i, (pos.y - size/2).to_i], Point[(pos.x + size/2).to_i, (pos.y + size/2).to_i])
+      renderer.draw_line(Point[(pos.x + size/2).to_i, (pos.y - size/2).to_i], Point[(pos.x - size/2).to_i, (pos.y + size/2).to_i])
+    end
+
     def update(point, drawables) : Array(Drawable)
       drawables.reject { |d| d.is_on_object(point) }
     end
@@ -91,6 +109,10 @@ module Dsoys
   class CircleDraw < Drawable
     property startPoint : Point
     property endPoint : Point
+
+    def self.draw_icon(renderer : SDL::Renderer, size : Int32, pos : Point)
+      renderer.draw_circle(pos, (size / 2).to_i)
+    end
 
     def initialize(point : Point)
       @startPoint = point

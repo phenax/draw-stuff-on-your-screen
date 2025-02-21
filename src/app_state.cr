@@ -5,7 +5,6 @@ module Dsoys
   module AppState
     property drawables = [] of Dsoys::Drawable
     property current_drawable : Dsoys::Drawable?
-    property current_drawable_class = Dsoys::FreeDraw
     property controls = Controls.new
 
     private def handle_event(event : SDL::Event)
@@ -25,16 +24,16 @@ module Dsoys
     private def on_keypress(event)
       case event.sym
       when .q?      then return :quit
-      when .p?, .f? then set_drawable_class Dsoys::FreeDraw
-      when .r?      then set_drawable_class Dsoys::RectDraw
-      when .d?      then set_drawable_class Dsoys::DeleteObjectDraw
-      when .c?      then set_drawable_class Dsoys::CircleDraw
-      when .key_1?  then controls.select_color 0
-      when .key_2?  then controls.select_color 1
-      when .key_3?  then controls.select_color 2
-      when .key_4?  then controls.select_color 3
-      when .key_5?  then controls.select_color 4
-      when .key_6?  then controls.select_color 5
+      when .p?, .f? then controls.select_tool :free
+      when .r?      then controls.select_tool :rect
+      when .d?      then controls.select_tool :delete
+      when .c?      then controls.select_tool :circle
+      when .key_1?  then controls.select_color :teal
+      when .key_2?  then controls.select_color :red
+      when .key_3?  then controls.select_color :blue
+      when .key_4?  then controls.select_color :purple
+      when .key_5?  then controls.select_color :gray
+      when .key_6?  then controls.select_color :yellow
       when .delete? then clear_drawables
       when .tab?    then controls.toggle_visible
       end
@@ -42,7 +41,7 @@ module Dsoys
 
     private def on_mouse_press(event)
       point = SDL::Point[event.x, event.y]
-      @current_drawable ||= current_drawable_class.new(point)
+      @current_drawable ||= controls.current_drawable_class.new(point)
       controls.activate(event.x, event.y)
     end
 
@@ -62,10 +61,6 @@ module Dsoys
       else
         controls.cursor_position = point
       end
-    end
-
-    private def set_drawable_class(drawable_class : Drawable.class)
-      @current_drawable_class = drawable_class
     end
 
     private def clear_drawables

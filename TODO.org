@@ -3,7 +3,7 @@
 - [X] erase/delete items
 - [X] draw circle?
 - [X] keys to switch colors
+- [X] buttons for freedraw and rect
 - [ ] documentation for key binds
-- [ ] buttons for freedraw and rect
 - [ ] cursor with current color
 - [ ] save drawing to file
