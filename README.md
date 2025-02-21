@@ -19,3 +19,13 @@ nix run github:phenax/chelleport#chelleport
 
 ## Usage
 Run `dsoys` and draw stuff
+
+#### Keybindings
+- `q`: Quit
+- `r`: Rectangle tool
+- `p`: Pencil tool
+- `c`: Circle tool
+- `d`: Delete object tool
+- `1-6`: Select the colors
+- `Delete`: Clear screen
+- `Tab`: Toggle ui elements

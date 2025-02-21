@@ -4,6 +4,5 @@
 - [X] draw circle?
 - [X] keys to switch colors
 - [X] buttons for freedraw and rect
-- [ ] documentation for key binds
 - [ ] cursor with current color
 - [ ] save drawing to file
