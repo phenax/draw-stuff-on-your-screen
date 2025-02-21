@@ -41,7 +41,7 @@ module Dsoys
     end
 
     private def on_mouse_press(event)
-      point = SDL::Point.new(event.x, event.y)
+      point = SDL::Point[event.x, event.y]
       @current_drawable ||= current_drawable_class.new(point)
       controls.activate(event.x, event.y)
     end
@@ -55,7 +55,7 @@ module Dsoys
     end
 
     private def on_mouse_move(event)
-      point = SDL::Point.new(event.x, event.y)
+      point = SDL::Point[event.x, event.y]
       if event.pressed?
         drawable = current_drawable
         @drawables = drawable.update(point, @drawables) unless drawable.nil?

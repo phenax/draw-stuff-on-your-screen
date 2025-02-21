@@ -69,9 +69,9 @@ module Dsoys
     private def rect_points
       [
         startPoint,
-        Point.new(startPoint.x, endPoint.y),
+        Point[startPoint.x, endPoint.y],
         endPoint,
-        Point.new(endPoint.x, startPoint.y),
+        Point[endPoint.x, startPoint.y],
         startPoint,
       ]
     end
@@ -106,6 +106,8 @@ module Dsoys
     def draw(renderer)
       renderer.draw_color = color || Color[255]
       renderer.draw_circle(center, radius.to_i)
+      renderer.draw_circle(center, radius.to_i + 1)
+      renderer.draw_circle(center, radius.to_i - 1)
     end
 
     def is_on_object(point : Point) : Bool
@@ -117,7 +119,7 @@ module Dsoys
     end
 
     private def center
-      @startPoint # .midpoint(@endPoint)
+      @startPoint.midpoint(@endPoint)
     end
 
     private def pointOnCircumference

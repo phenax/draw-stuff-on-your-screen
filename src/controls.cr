@@ -13,14 +13,14 @@ module Dsoys
 
     property buttons = [] of Button
     property draw_color = COLORS[0]
-    property cursor_position = Point.new(0, 0)
+    property cursor_position = Point[0, 0]
 
     def initialize
       x = 40
       y = 100
       @visible = true
       COLORS.each_with_index do |color, index|
-        buttons.push(color_btn(Point.new(x, y + 40*index), color))
+        buttons.push(color_btn(Point[x, y + 40 * index], color))
       end
     end
 
